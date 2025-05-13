@@ -1,14 +1,3 @@
-// popup.js
-// ------------------------------------------------------
-// Two actions from the popup:
-//   1️⃣ Extract profile info (JSON)
-//   2️⃣ Download LinkedIn native PDF
-// ------------------------------------------------------
-
-/* --------------------------------------------------------------------- */
-/*  UI bindings (popup)                                                  */
-/* --------------------------------------------------------------------- */
-
 document.getElementById("extract").addEventListener("click", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({ target: { tabId: tab.id }, func: extractProfileInfo });
@@ -18,10 +7,6 @@ document.getElementById("downloadPdf").addEventListener("click", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({ target: { tabId: tab.id }, func: saveProfileAsPDF });
 });
-
-/* --------------------------------------------------------------------- */
-/*  extractProfileInfo — builds JSON and downloads it                    */
-/* --------------------------------------------------------------------- */
 
 function extractProfileInfo() {
   /* helpers local to injected context */
@@ -114,10 +99,6 @@ function extractProfileInfo() {
   })();
 }
 
-/* --------------------------------------------------------------------- */
-/*  saveProfileAsPDF — triggers LinkedIn native PDF export               */
-/* --------------------------------------------------------------------- */
-
 function saveProfileAsPDF() {
   const waitForSelector = async (selector, maxRetries = 15, interval = 250) => {
     for (let i = 0; i < maxRetries; i++) {
@@ -129,7 +110,6 @@ function saveProfileAsPDF() {
   };
 
   (async () => {
-    // 1️⃣ Open the « More » button in profile header
      const moreBtn = await waitForSelector(
       'button[aria-label*="Plus d’actions"], ' +
       'button[aria-label*="Plus d\'actions"], ' +
@@ -143,7 +123,6 @@ function saveProfileAsPDF() {
     }
     moreBtn.click();
 
-    // 2️⃣ Click « Save to PDF » entry
     const pdfBtn = await waitForSelector(
       'div[role="button"][aria-label*="Enregistrer au format PDF"], ' +
       'div[role="button"][aria-label*="Save to PDF"]'
