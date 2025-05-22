@@ -13,13 +13,22 @@ chrome.runtime.onMessage.addListener((msg)=>{
   fill(document.getElementById('edu'), d.education||[], ['school','degree','date']);
   document.getElementById('skills').innerHTML = (d.skills||[]).map(s=>'<li>'+s+'</li>').join('');
 
-  document.getElementById('downloadJson').onclick = () => {
-    const blob = new Blob([JSON.stringify(d,null,2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = (d.name || 'linkedin_profile') + '.json';
-    a.click();
-    URL.revokeObjectURL(url);
+  document.getElementById('saveLocal').onclick = () => {
+    chrome.storage.local.get({ profiles: [] }, (res) => {
+    const list = res.profiles;
+
+    const already = list.some(p =>
+      (p.profileUrl && d.profileUrl && p.profileUrl === d.profileUrl) ||
+      (!p.profileUrl && p.name === d.name)
+    );
+    if (already) {
+      alert('Profile already saved 🗂️');
+      return;
+    }
+    list.push(d);
+    chrome.storage.local.set({ profiles: list }, () => {
+      alert('Profile saved to local storage ✔️');
+    });
+  });
   };
 });

@@ -1,14 +1,4 @@
-<<<<<<< HEAD
-// popup.js
-// ------------------------------------------------------------------
-// Two actions:
-//  1. Extract profile info -> open preview tab
-//  2. Download LinkedIn native PDF via More ▸ Save as PDF
-// ------------------------------------------------------------------
 
-// Bind buttons
-=======
->>>>>>> f85ed18089c940ac867f6793e0b74ce808a4d7c6
 document.getElementById("extract").addEventListener("click", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
@@ -25,12 +15,7 @@ document.getElementById("downloadPdf").addEventListener("click", async () => {
   });
 });
 
-<<<<<<< HEAD
 /* ---------------------  Injected FUNCTIONS ---------------------- */
-
-// 1️⃣  Extract and send to preview
-=======
->>>>>>> f85ed18089c940ac867f6793e0b74ce808a4d7c6
 function extractProfileInfo() {
   // helpers inside injected context
   const waitForSelector = async (selector, maxRetries = 15) => {
@@ -107,10 +92,6 @@ function extractProfileInfo() {
   })();
 }
 
-<<<<<<< HEAD
-// 2️⃣  Click More ▸ Save as PDF
-=======
->>>>>>> f85ed18089c940ac867f6793e0b74ce808a4d7c6
 function saveProfileAsPDF() {
   const waitForSelector = async (selector, maxRetries = 15) => {
     for (let i = 0; i < maxRetries; i++) {
@@ -122,41 +103,21 @@ function saveProfileAsPDF() {
   };
 
   (async () => {
-<<<<<<< HEAD
     window.scrollTo({top:0, behavior:"instant"});
 
-    const moreBtn = await waitForSelector(          'button[aria-label*="Plus d’actions"],'+
-      'button[aria-label*="Plus d\\'actions"],'+
-      'button[aria-label*="Plus"]:not([aria-label*="compétence"]),'+
-      'button[aria-label*="More actions"],'+
-      'button.artdeco-dropdown__trigger[aria-expanded]'        );
-    if(!moreBtn){ alert('Bouton "Plus / More actions" introuvable'); return;}
-    moreBtn.click();
-
-    const pdfItem = await waitForSelector(          'div[role="button"][aria-label*="format PDF"],' +          'div[role="button"][aria-label*="Save as PDF"],' +          'button[aria-label*="Save as PDF"]'        );
-    if(!pdfItem){ alert('Option "Enregistrer au format PDF" introuvable'); return;}
-    pdfItem.click();
-=======
-     const moreBtn = await waitForSelector(
+    const moreBtn = await waitForSelector(
       'button[aria-label*="Plus d’actions"], ' +
       'button[aria-label*="Plus d\'actions"], ' +
       'button[aria-label*="Plus"]:not([aria-label*="compétence"]), ' +
       'button[aria-label*="More actions"], ' +
       'button.artdeco-dropdown__trigger[aria-expanded]'
     );
-    if (!moreBtn) {
-      alert("Bouton 'Plus / More actions' introuvable.");
-      return;
-    }
+    if(!moreBtn){ alert('Bouton "Plus / More actions" introuvable'); return;}
     moreBtn.click();
 
-    const pdfBtn = await waitForSelector(
-      'div[role="button"][aria-label*="Enregistrer au format PDF"], ' +
-      'div[role="button"][aria-label*="Save to PDF"]'
-    );
-    if (!pdfBtn) { alert("Option 'Enregistrer au format PDF' non trouvée."); return; }
-    pdfBtn.click(); // LinkedIn triggers native download
->>>>>>> f85ed18089c940ac867f6793e0b74ce808a4d7c6
+    const pdfItem = await waitForSelector(          'div[role="button"][aria-label*="format PDF"],' +          'div[role="button"][aria-label*="Save as PDF"],' +          'button[aria-label*="Save as PDF"]'        );
+    if(!pdfItem){ alert('Option "Enregistrer au format PDF" introuvable'); return;}
+    pdfItem.click();
   })();
 }
 
